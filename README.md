@@ -2,7 +2,7 @@
 ***
 #### 安装： pip install requests-html
 #### 中文文档：https://cncert.github.io/requests-html-doc-cn/#/
-#搭建常用通用爬虫各组件
+# 搭建常用通用爬虫各组件
 ## 简介：
  - 1、 爬虫模块编写，支持pyquery、xpath、JavaScript、beautifulsoup、正则等多种解析模式，使用请查看上面中文文档；
  - 2、 支持抓取各类日志保存，抓取日志、错误日志等各类日志信息；
