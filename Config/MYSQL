@@ -1,0 +1,6 @@
+test01:
+    host: localhost
+    user: root
+    passwd: root
+    port: 3306
+    db: test

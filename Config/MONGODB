@@ -1,0 +1,7 @@
+mongo_test:
+  host : 'localhost'
+  port : 27017
+  db : 'demo'
+  table : 'demo'
+  user :
+  passwd :
