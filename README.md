@@ -39,6 +39,5 @@ UserAgent.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---request\_html\_demo\_1.py&nbsp;&nbsp;&nbsp;|--简书python爬虫教程抓取<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---request\_html\_demo\_2.py&nbsp;&nbsp;&nbsp;|--爬取博客园新闻<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|---request\_html\_demo\_3.py&nbsp;&nbsp;&nbsp;|--爬取电脑高清壁纸库<br>
-##说明：
-###&nbsp;&nbsp;本框架主要是爬虫基本常用模块组合，避免了日常爬虫编写中各类组件重新编写过程，同时结合requests—html使得编写更为简便，其中requests-html是requests的原作者专门针对爬虫编写的一个新模块，并在不断的跟新状态，[官方-github](https://github.com/kennethreitz/requests-html)
+## 说明：&nbsp;&nbsp;本框架主要是爬虫基本常用模块组合，避免了日常爬虫编写中各类组件重新编写过程，同时结合requests—html使得编写更为简便，其中requests-html是requests的原作者专门针对爬虫编写的一个新模块，并在不断的跟新状态，[官方-github](https://github.com/kennethreitz/requests-html)
 #### Only Python 3.6 is supported.
