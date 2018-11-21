@@ -12,12 +12,14 @@
 """
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 
 
 class GetLocalFile:
     """ 读取本地文件，返回：List """
+
     @staticmethod
     def get_local_file(filename):
         with open(filename, "r", encoding="utf-8") as f:

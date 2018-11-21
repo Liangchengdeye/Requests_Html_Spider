@@ -13,6 +13,7 @@
 """
 import os
 import sys
+
 sys.path.append(r'your_path')
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
@@ -32,16 +33,17 @@ HEADERS = {
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': '%s' % UserAgent.pc_agent()},
     # 简书
-    "headersJianShun" : {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Accept-Language': 'zh-CN,zh;q=0.9',
-    'Cache-Control': 'max-age=0',
-    'Connection': 'keep-alive',
-    'Host': 'www.jianshu.com',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': '%s' % UserAgent.pc_agent()},
+    "headersJianShun": {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive',
+        'Host': 'www.jianshu.com',
+        'Upgrade-Insecure-Requests': '1',
+        'User-Agent': '%s' % UserAgent.pc_agent()},
 
 }
-# print(headers)
-# print(HEADERS['heasers'])
+
+if __name__ == '__main__':
+    print(HEADERS['heasers'])

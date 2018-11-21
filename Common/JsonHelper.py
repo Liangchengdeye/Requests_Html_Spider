@@ -10,37 +10,51 @@
 @time: 2018/10/31 15:04 
 @describe: 读写json文件
 """
+import logging
 import sys
 import os
 import json
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
+from BaseFile.Logger import Logger
+logger = Logger('Json.log', logging.WARNING, logging.DEBUG)
 
 
 class JsonHelper:
-
     """ 以追加方式写入json文件，message 数据格式：List """
+
     def json_write(self, fireName, message):
         try:
             out = open('../Data/%s' % fireName, 'a', encoding='utf-8')
-            out.write(json.dumps(message)+"\n")
+            out.write(json.dumps(message) + "\n")
             print("write successful!")
         except Exception as e:
             print("[json write error]", e)
+            logger.error("[json write error]"+str(e))
 
     """读取json文件，原文件每行为一个独立json串，组合并不是一个正确的json格式"""
+
     def json_read(self, fireName):
-        with open('../Data/%s'% fireName, 'r', encoding='utf-8') as f:
-            msg = f.readlines()
-        return [json.loads(data[:-1]) for data in msg]
+        try:
+            with open('../Data/%s' % fireName, 'r', encoding='utf-8') as f:
+                msg = f.readlines()
+            return [json.loads(data[:-1]) for data in msg]
+        except Exception as e:
+            print("[json read error]", e)
+            logger.error("[json read error]"+str(e))
 
     """读取json文件，只做查看，无返回值，需要返回值，使用上一个方法"""
+
     def json_watch(self, fireName):
-        f = open('../Data/%s'% fireName, 'r', encoding='utf-8')
-        for data in f:
-            print("*"*150)
-            print(json.loads(data))
-            print("*"*150, "\n")
+        try:
+            f = open('../Data/%s' % fireName, 'r', encoding='utf-8')
+            for data in f:
+                print("*" * 150)
+                print(json.loads(data))
+                print("*" * 150, "\n")
+        except Exception as e:
+            print("[json watch error]", e)
+            logger.error("[json watch error]"+str(e))
 
 
 if __name__ == '__main__':
@@ -48,6 +62,6 @@ if __name__ == '__main__':
     str_json = JsonHelper().json_read("cnblogs.json")
     for i in str_json:
         print(i)
-        print("*"*100, "\n")
+        print("*" * 100, "\n")
     # 读取json--查看
     JsonHelper().json_watch("cnblogs.json")

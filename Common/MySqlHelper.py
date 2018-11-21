@@ -12,15 +12,18 @@
 @describe: 数据库操作助手
 http://www.runoob.com/mysql/mysql-tutorial.html
 """
+import logging
 import sys
 import os
 import pymysql
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 from BaseFile.ReadConfig import ReadConfig as RC
+from BaseFile.Logger import Logger
+logger = Logger('mysql.log', logging.WARNING, logging.DEBUG)
 
 
-class DBHelper:
+class MysqlHelper:
     """这个类也是读取 Config/MYSQL中的配置，自行修改代码进行操作"""
 
     def __init__(self, DBName):
@@ -56,46 +59,71 @@ class DBHelper:
     def createDatabase(self):
         """因为创建数据库直接修改 Config-MYSQL 中的配置 MYSQL_DBNAME 即可，所以就不要传sql语句了"""
         conn = self.connectMysql()  # 连接数据库
-        sql = "create database if not exists " + self.db
         cur = conn.cursor()
-        cur.execute(sql)  # 执行sql语句
-        cur.close()
-        conn.close()
+        try:
+            sql = "create database if not exists " + self.db
+            cur.execute(sql)  # 执行sql语句
+        except Exception as e:
+            print("Error createDatabase data!", e)
+            logger.error("Error createDatabase data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
     # 创建表
     def createTable(self, sql):
         conn = self.connectDatabase()
         cur = conn.cursor()
-        cur.execute(sql)
-        cur.close()
-        conn.close()
+        try:
+            cur.execute(sql)
+        except Exception as e:
+            print("Error createTable data!", e)
+            logger.error("Error createTable data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
     # 插入数据
     def insert(self, sql, *params):
         conn = self.connectDatabase()
         cur = conn.cursor()
-        cur.execute(sql, params)
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            cur.execute(sql, params)
+            conn.commit()
+        except Exception as e:
+            print("Error insert data!", e)
+            logger.error("Error insert data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
     # 更新数据
     def update(self, sql, *params):
         conn = self.connectDatabase()
         cur = conn.cursor()
-        cur.execute(sql, params)
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            cur.execute(sql, params)
+            conn.commit()
+        except Exception as e:
+            print("Error update data!", e)
+            logger.error("Error update data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
     # 删除数据
     def delete(self, sql, *params):
         conn = self.connectDatabase()
         cur = conn.cursor()
-        cur.execute(sql, params)
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            cur.execute(sql, params)
+            conn.commit()
+        except Exception as e:
+            print("Error delete data!", e)
+            logger.error("Error delete data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
     # 查询数据
     def select(self, sql):
@@ -112,8 +140,10 @@ class DBHelper:
             return list_results
         except Exception as e:
             print("Error: unable to fecth data", e)
-        cur.close()
-        conn.close()
+            logger.error("Error: unable to fecth data! "+str(e))
+        finally:
+            cur.close()
+            conn.close()
 
 
 '''测试DBHelper的类'''
@@ -162,4 +192,4 @@ if __name__ == "__main__":
     # testDBHelper.testInsert()          #执行测试插入数据
     # testDBHelper.testUpdate()          #执行测试更新数据
     # testDBHelper.testDelete()          #执行测试删除数据
-    print(testDBHelper.testSelect() )         #执行测试查询数据
+    print(testDBHelper.testSelect())  # 执行测试查询数据

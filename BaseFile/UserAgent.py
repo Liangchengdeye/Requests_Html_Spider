@@ -15,6 +15,7 @@
 import random
 import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 USER_AGENT_LIST = [
@@ -93,11 +94,13 @@ USER_AGENT_PHONE_LIST = [
 
 class UserAgent:
     """电脑端请求头"""
+
     @staticmethod
     def pc_agent():
         return random.choice(USER_AGENT_LIST)
 
     """手机端请求头"""
+
     @staticmethod
     def phone_agent():
         return random.choice(USER_AGENT_PHONE_LIST)

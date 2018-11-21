@@ -6,8 +6,8 @@
 @license: Apache Licence  
 @contact: 415900617@qq.com 
 @software: PyCharm 
-@file: RedisHelper.py 
-@time: 2018/9/26 10:14 
+@file: RedisHelperLongConncet.py 
+@time: 2018/11/9 11:13 
 @describe: redis 操作助手
 列出了常用操作，若要使用更多方法，可根据需求增加
 http://www.runoob.com/redis/redis-tutorial.html
@@ -22,31 +22,53 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 from BaseFile.ReadConfig import ReadConfig as RC
 from BaseFile.Logger import Logger
-logger = Logger('redisPool.log', logging.WARNING, logging.DEBUG)
+logger = Logger('redisStatic.log', logging.WARNING, logging.DEBUG)
+
+""" 配置文件名字"""
+CONFIGNAME = "test01"
 
 
-# Redis助手一
-class RedisHelper:
-    """创建Redis连接，每次使用完，自动释放连接
-    """
+# USE IT :from Common.RedisHelperLongConncet import RedisHelperConnect as RHC
+# CONNECT POOL: pool = redisConfig("test02").getConfig() in the last lines
+# 获取配置信息
+class redisConfig:
+    """建立 redispool-不释放连接"""
+
     def __init__(self, DBName):
-        self.settings = RC().get_conf("../Config/REDIS")[DBName]  # 获取Config-REDIS 配置
-        self.host = self.settings['host']
-        self.port = self.settings['port']
-        self.user = self.settings['user']
-        self.passwd = self.settings['passwd']
-        self.db = self.settings['db']
-        try:
-            # # 建立 REDIS 连接池
-            # self.pool = redis.ConnectionPool(host=self.host, port=self.port, db=self.db, password=self.passwd,
-            #                                  decode_responses=True, socket_timeout=300)
-            # self.r = redis.Redis(connection_pool=self.pool)
-            self.r = redis.Redis(host=self.host, port=self.port, db=self.db, password=self.passwd,
-                                             decode_responses=True, socket_timeout=300)
+        self.DBName = DBName
 
+    # 获取配置信息
+    def getConfig(self):
+        try:
+            DBName = self.DBName
+            settings = RC().get_conf("../Config/REDIS")[DBName]  # 获取Config-REDIS 配置
+            host = settings['host']
+            port = settings['port']
+            user = settings['user']
+            passwd = settings['passwd']
+            db = settings['db']
+            # 建立 REDIS 连接池
+            pool = redis.ConnectionPool(host=host, port=port, db=db, password=passwd, decode_responses=True,
+                                        socket_timeout=300)
+            return pool
         except Exception as e:
-            print("REDIS CONTENT ERROR:", e)
-            logger.error("REDIS CONTENT ERROR: "+str(e))
+            print("Redis Read config error!", e, "no config in REDIS.YAML!")
+            logger.error("Redis Read config error! "+str(e) + " no config in REDIS.YAML!")
+
+
+""" 使用那个配置文件 """
+pool = redisConfig(CONFIGNAME).getConfig()
+
+
+class RedisHelperConnect:
+    """创建Redis连接，不释放连接
+        redis.ConnectionPool：创建连接池
+    """
+    try:
+        r = redis.Redis(connection_pool=pool)
+    except Exception as e:
+        print("REDIS CONTENT ERROR:", e)
+        logger.error("REDIS CONTENT ERROR:"+str(e))
 
     # 第二个参数listURL，必须传入list结构数据，插入到redis
     def redis_lpush(self, keyName, listUrl):
@@ -76,7 +98,7 @@ class RedisHelper:
             return url_list
         except Exception as e:
             print('[redis_pop] ERROR', e)
-            logger.error('[redis_pop] ERROR '+str(e))
+            logger.error('[redis_pop] ERROR'+str(e))
 
     # 获取redis长度
     def redis_llen(self, keyName):
@@ -133,10 +155,9 @@ class RedisHelper:
             url_list = self.r.smembers(keyName).decode()
             return url_list
         except Exception as e:
-            print('[redis_smembers] ERROR', e)
-            logger.error('[redis_smembers] ERROR '+str(e))
+            print('[redis_spop] ERROR', e)
+            logger.error('[redis_spop] ERROR '+str(e))
 
 
 if __name__ == '__main__':
-    r = RedisHelper('test01').redis_llen("test")
-    print(r)
+    r = RedisHelperConnect().redis_llen("url")

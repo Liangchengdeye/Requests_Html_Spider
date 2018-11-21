@@ -11,12 +11,15 @@
 @describe: mongodb 助手
 http://www.runoob.com/mongodb/mongodb-connections.html
 """
+import logging
 import sys
 import os
 from pymongo import MongoClient
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 from BaseFile.ReadConfig import ReadConfig as RC
+from BaseFile.Logger import Logger
+logger = Logger('mongodb.log', logging.WARNING, logging.DEBUG)
 
 
 class MongoHelper:
@@ -43,11 +46,17 @@ class MongoHelper:
         :param collection_name:  可选，需要访问哪个集合
         :return:
         """
-        if collection_name is not None:
-            collection = self.db.get_collection(self.db)
-            collection.insert(item)
-        else:
-            self.collection.insert(item)
+        try:
+            if collection_name is not None:
+                collection = self.db.get_collection(self.db)
+                collection.insert(item)
+            else:
+                self.collection.insert(item)
+        except Exception as e:
+            print("mongodb insert error!", e)
+            logger.error("mongodb insert error! "+str(e))
+        finally:
+            self.conn.close()
 
     def find(self, expression=None, collection_name=None):
         """
@@ -56,17 +65,23 @@ class MongoHelper:
         :param collection_name: 集合名称
         :return: 所有结果
         """
-        if collection_name is not None:
-            collection = self.db.get_collection(self.db)
-            if expression is None:
-                return collection.find()
+        try:
+            if collection_name is not None:
+                collection = self.db.get_collection(self.db)
+                if expression is None:
+                    return collection.find()
+                else:
+                    return collection.find(expression)
             else:
-                return collection.find(expression)
-        else:
-            if expression is None:
-                return self.collection.find()
-            else:
-                return self.collection.find(expression)
+                if expression is None:
+                    return self.collection.find()
+                else:
+                    return self.collection.find(expression)
+        except Exception as e:
+            print("mongodb find error!", e)
+            logger.error("mongodb find error! "+str(e))
+        finally:
+            self.conn.close()
 
     def get_collection(self, collection_name=None):
         """
@@ -74,10 +89,16 @@ class MongoHelper:
         :param collection_name: 集合名称
         :return: collection
         """
-        if collection_name is None:
-            return self.collection
-        else:
-            return self.get_collection(collection_name)
+        try:
+            if collection_name is None:
+                return self.collection
+            else:
+                return self.get_collection(collection_name)
+        except Exception as e:
+            print("mongodb get_collection error!", e)
+            logger.error("mongodb get_collection error! "+str(e))
+        finally:
+            self.conn.close()
 
 
 if __name__ == '__main__':

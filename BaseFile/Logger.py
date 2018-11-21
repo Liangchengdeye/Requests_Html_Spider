@@ -32,7 +32,7 @@ class Logger:
     def __init__(self, path, clevel=logging.DEBUG, Flevel=logging.DEBUG):
         fmt = logging.Formatter('[%(asctime)s] [%(levelname)s] %(message)s', '%Y-%m-%d %H:%M:%S')
         startTime = datetime.datetime.now().strftime('%Y-%m-%d')
-        path = os.path.join(log_dir, str(startTime)+"-"+path)
+        path = os.path.join(log_dir, str(startTime) + "-" + path)
         self.logger = logging.getLogger(path)
         self.logger.setLevel(logging.DEBUG)
         # 设置CMD日志
@@ -46,16 +46,16 @@ class Logger:
         self.logger.addHandler(sh)
         self.logger.addHandler(fh)
 
-    def debug(self, message, color = FOREGROUND_BLUE):
+    def debug(self, message, color=FOREGROUND_BLUE):
         self.logger.debug(message)
 
-    def info(self, message, color = FOREGROUND_GREEN):
+    def info(self, message, color=FOREGROUND_GREEN):
         self.logger.info(message)
 
-    def war(self, message, color = FOREGROUND_YELLOW):
+    def war(self, message, color=FOREGROUND_YELLOW):
         self.logger.warn(message)
 
-    def error(self, message, color = FOREGROUND_RED):
+    def error(self, message, color=FOREGROUND_RED):
         self.logger.error(message)
 
     def cri(self, message):

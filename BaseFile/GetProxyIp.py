@@ -14,12 +14,14 @@ import sys
 import os
 import random
 import time
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 
 
 class GetProxyIp:
     """随机从文件中读取proxy"""
+
     @staticmethod
     def get_random_proxy():
         while True:
@@ -33,6 +35,7 @@ class GetProxyIp:
         return proxy
 
     """返回HTTP/HTTPS的代理IP，可根据代理IP类型更改"""
+
     def get_IP_Http(self):
         IP = self.get_random_proxy()
         proxies = {
